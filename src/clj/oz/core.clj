@@ -684,15 +684,20 @@
               "Unable to compile viz"
               (try
                 (let [[opt-type opt-val] embed-as]
+                  (log/info "embed-as" embed-as)
 
                   (cond
                     ;; default to png, since this will generally be more performant (TODO: test?)
                     (or (and (= opt-type :bool) opt-val)
                         (= opt-val :png))
-                    (embed-png (compile doc (merge opts {:from-format mode :to-format :png})))
+                    (let [r (embed-png (compile doc (merge opts {:from-format mode :to-format :png})))]
+                      (log/info "PRIMEIRO COND" doc :opts opts)
+                      r)
                     ;; Use svg as hiccup if requested
                     (= opt-val :svg)
-                    (compile doc (merge opts {:from-format mode :to-format :svg}))))
+                    (let [r (compile doc (merge opts {:from-format mode :to-format :svg}))]
+                      (log/info "SEGUNDO COND" doc :opts opts)
+                      r)))
                 (catch Throwable t
                   (log/error "Unable to execute static embed")
                   (log/error t)
@@ -1109,7 +1114,7 @@
    ;; Support mode or from-format to `compile`, but require compile* registrations to use `:from-format`
    ;; This is maybe why we _do_ need this function
    (let [[from-format to-format :as key] (compiler-key doc opts)]
-     (log/debug "compile key is" (with-out-str (pp/pprint key)))
+     (log/info "compile key is" (with-out-str (pp/pprint key)))
      (assert (s/valid? ::registered-compiler-key key))
      (cond
        (or (= :hiccup from-format to-format)
