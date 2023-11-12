@@ -684,6 +684,7 @@
               "Unable to compile viz"
               (try
                 (let [[opt-type opt-val] embed-as]
+
                   (cond
                     ;; default to png, since this will generally be more performant (TODO: test?)
                     (or (and (= opt-type :bool) opt-val)
