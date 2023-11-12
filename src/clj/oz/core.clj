@@ -877,9 +877,7 @@
 (defmulti export!*
   {:arglists '([doc filepath {:as opts :keys [to-format]}])}
   (fn [doc _ {:as opts}]
-    (let [r (second (compiler-key doc opts))]
-      (log/info "COMPILERKEY " r))
-    r))
+    (second (compiler-key doc opts))))
 
 ;(defmulti export!
   ;"In alpha; Export doc to an html file. May eventually have other options, including svg, jpg & pdf available"
