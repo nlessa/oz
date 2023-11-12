@@ -877,7 +877,9 @@
 (defmulti export!*
   {:arglists '([doc filepath {:as opts :keys [to-format]}])}
   (fn [doc _ {:as opts}]
-    (second (compiler-key doc opts))))
+    (let [r (second (compiler-key doc opts))]
+      (log/info "COMPILERKEY " r))
+    r))
 
 ;(defmulti export!
   ;"In alpha; Export doc to an html file. May eventually have other options, including svg, jpg & pdf available"
@@ -892,6 +894,7 @@
   :default
   [doc filepath {:as opts}] 
   ;; Default method is to just call convert and spit to file
+  (log/info "EXPORT! DEFULAT")
   (spit filepath (compile doc opts)))
 
 
@@ -921,6 +924,7 @@
 (defmethod export!* :png
   ([doc filepath {:as opts}]
    (let [from-format (first (compiler-key doc opts))]
+     (log/info "EXPORT! :png")
      (vega-cli (merge opts
                       {:vega-doc doc
                        :to-format :png
