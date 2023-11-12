@@ -428,6 +428,9 @@
              ;; Write out the vega-doc file, and run the vega(-lite) cli command
              _ (when vega-doc
                  (spit input-filename (json/encode vega-doc)))
+             _ (log/info {:vega-doc vega-doc
+                          :vega-doc-json (json/encode vega-doc)
+                          :command command})
              {:keys [out exit err]} (shell/sh command input-filename output-filename)]
          (log/info "input:" input-filename)
          (log/info "output:" output-filename)
