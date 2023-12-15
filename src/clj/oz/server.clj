@@ -1,24 +1,24 @@
 (ns ^:no-doc oz.server
   (:require
-   [clojure.string :as str]
-   [ring.middleware.defaults]
-   [ring.middleware.gzip :refer [wrap-gzip]]
-   [ring.middleware.anti-forgery :refer (*anti-forgery-token*)]
-   [ring.util.response :as response]
-   [compojure.core :as comp :refer (defroutes GET POST)]
-   [compojure.route :as route]
-   [clojure.core.async :as async  :refer (<! <!! >! >!! put! chan go go-loop)]
-   [taoensso.encore :as encore :refer (have have?)]
-   [taoensso.timbre :as log :refer (tracef debugf infof warnf errorf)]
-   [taoensso.sente  :as sente]
-   [aleph.http :as aleph]
-   [taoensso.sente.server-adapters.aleph :refer (get-sch-adapter)]
-   [taoensso.sente.packers.transit :as sente-transit]
-   [cheshire.core :as json]
-   [clojure.java.io :as io]
-   [oz.live :as live])
+    [clojure.string :as str]
+    [ring.middleware.defaults]
+    [ring.middleware.gzip :refer [wrap-gzip]]
+    [ring.middleware.anti-forgery :refer (*anti-forgery-token*)]
+    [ring.util.response :as response]
+    [compojure.core :as comp :refer (defroutes GET POST)]
+    [compojure.route :as route]
+    [clojure.core.async :as async :refer (<! <!! >! >!! put! chan go go-loop)]
+    [taoensso.encore :as encore :refer (have have?)]
+    [taoensso.timbre :as log :refer (tracef debugf infof warnf errorf)]
+    [taoensso.sente :as sente]
+    [aleph.http :as aleph]
+    [taoensso.sente.server-adapters.aleph :refer (get-sch-adapter)]
+    [taoensso.sente.packers.transit :as sente-transit]
+    [cheshire.core :as json]
+    [clojure.java.io :as io]
+    [oz.live :as live])
   (:import
-   [java.util UUID])
+    [java.util UUID])
   (:gen-class))
 
 
@@ -33,7 +33,7 @@
 (let [packer (sente-transit/get-transit-packer)
       ;; TODO CSRF token set to nil for now; Need to fix this https://github.com/metasoarous/oz/issues/122
       chsk-server (sente/make-channel-socket-server! (get-sch-adapter)
-                                                     {:packer packer
+                                                     {:packer     packer
                                                       :user-id-fn (fn [& args]
                                                                     (log/info args)
                                                                     (UUID/randomUUID))})
@@ -71,42 +71,48 @@
 
 (defonce current-root-dir (atom ""))
 
-(defroutes my-routes
-  (GET  "/" req (response/content-type
-                  {:status 200
-                   :session (if (session-uid req)
-                              (:session req)
-                              (assoc (:session req) :uid (unique-id)))
-                   :body (io/input-stream (io/resource "oz/public/index.html"))}
-                  "text/html"))
-  (GET "/token" req (json/generate-string {:csrf-token *anti-forgery-token*}))
-  (GET  "/chsk" req
-        (debugf "/chsk got: %s" req)
-        (ring-ajax-get-or-ws-handshake req))
-  (POST "/chsk" req (ring-ajax-post req))
-  (route/resources "/" {:root "oz/public"})
-  (GET "*" req (let [reqpath (live/join-paths @current-root-dir (-> req :params :*))
-                     reqfile (io/file reqpath)
-                     altpath (str reqpath ".html")
-                     dirpath (live/join-paths reqpath "index.html")]
-                 (cond
-                   ;; If the path exists, use that
-                   (and (.exists reqfile) (not (.isDirectory reqfile)))
-                   (response/file-response reqpath)
-                   ;; If not, look for a `.html` version and if found serve that instead
-                   (.exists (io/file altpath))
-                   (response/content-type (response/file-response altpath) "text/html")
-                   ;; If the path is a directory, check for index.html
-                   (and (.exists reqfile) (.isDirectory reqfile))
-                   (response/file-response dirpath)
-                   ;; Otherwise, not found
-                   :else (response/redirect "/"))))
-  (route/not-found "<h1>There's no place like home</h1>"))
+(defroutes routers-handler
+           (GET "/" req (response/content-type
+                          {:status  200
+                           :session (if (session-uid req)
+                                      (:session req)
+                                      (assoc (:session req) :uid (unique-id)))
+                           :body    (io/input-stream (io/resource "oz/public/index.html"))}
+                          "text/html"))
+           (GET "/token" req (json/generate-string {:csrf-token *anti-forgery-token*}))
+           (GET "/chsk" req
+             (debugf "/chsk got: %s" req)
+             (ring-ajax-get-or-ws-handshake req))
+           (POST "/chsk" req (ring-ajax-post req))
+           (route/resources "/" {:root "oz/public"})
+           (GET "*" req (let [reqpath (live/join-paths @current-root-dir (-> req :params :*))
+                              reqfile (io/file reqpath)
+                              altpath (str reqpath ".html")
+                              dirpath (live/join-paths reqpath "index.html")]
+                          (cond
+                            ;; If the path exists, use that
+                            (and (.exists reqfile) (not (.isDirectory reqfile)))
+                            (response/file-response reqpath)
+                            ;; If not, look for a `.html` version and if found serve that instead
+                            (.exists (io/file altpath))
+                            (response/content-type (response/file-response altpath) "text/html")
+                            ;; If the path is a directory, check for index.html
+                            (and (.exists reqfile) (.isDirectory reqfile))
+                            (response/file-response dirpath)
+                            ;; Otherwise, not found
+                            :else (response/redirect "/"))))
+           (route/not-found "<h1>There's no place like home</h1>"))
 
+(defn csp-handler [handler]
+  (fn [request]
+    (let [response (handler request)]
+      (assoc-in response [:headers "Content-Security-Policy"] "frame-ancestors localhost:3000"))))
 
 (def main-ring-handler
-  (-> my-routes
-      (ring.middleware.defaults/wrap-defaults ring.middleware.defaults/site-defaults)
+  (-> routers-handler
+      (ring.middleware.defaults/wrap-defaults               ;Wraps a handler in default Ring middleware
+        ring.middleware.defaults/site-defaults)             ;default configurations
+      (csp-handler)
       (wrap-gzip)))
 
 (defmulti -event-msg-handler :id)
@@ -135,12 +141,12 @@
 (defn stop-web-server! [] (when-let [stop-fn (:stop-fn @web-server_)] (stop-fn)))
 (defn start-web-server! [& [port]]
   (stop-web-server!)
-  (let [port (or port default-port) ; 0 => Choose any available port
+  (let [port (or port default-port)                         ; 0 => Choose any available port
         ring-handler (var main-ring-handler)
         [port stop-fn]
         (let [server (aleph/start-server ring-handler {:port port})
               p (promise)]
-          (future @p) ; Workaround for Ref. https://goo.gl/kLvced
+          (future @p)                                       ; Workaround for Ref. https://goo.gl/kLvced
           ;; (aleph.netty/wait-for-close server)
           [(aleph.netty/port server)
            (fn [] (.close ^java.io.Closeable server) (deliver p nil))])
@@ -156,7 +162,7 @@
       (Thread/sleep 7500)
       (catch Throwable t
         (log/error "Unable to open a browser tab for you. Please visit" (str "http://localhost:" port))))))
-        ;(log/error t)))))
+;(log/error t)))))
 
 
 (defn get-server-port [] (:port @web-server_))
