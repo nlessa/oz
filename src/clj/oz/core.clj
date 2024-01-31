@@ -1,4 +1,4 @@
-(ns 
+(ns
   ^{:ns-metadata :yes-please}
   oz.core
   (:refer-clojure :exclude [load compile])
@@ -40,7 +40,7 @@
   [f & args]
   (apply f (concat (butlast args) (flatten (into [] (last args))))))
 
-  
+
 
 (defn sample
   ([spec]
@@ -187,7 +187,7 @@
 (s/def ::tags (s/coll-of string?))
 (s/def ::keywords (s/coll-of string?))
 (s/def ::shortcut-icon-url string?)
-         
+
 (s/def ::omit-shortcut-icon? boolean?)
 (s/def ::omit-styles? boolean?)
 (s/def ::omit-charset? boolean?)
@@ -312,7 +312,7 @@
       (s/gen
         #{(fn [[_ & rest]] [:blah [:zippy "Never gonna give you up"] rest])
           (fn [_] [:elided "nothing to see here"])}))))
-          
+
 
 (s/def ::tag-compilers
   (s/map-of ::tag ::tag-compiler))
@@ -497,7 +497,7 @@
 ;; This is the right way to do this if we need it
 ;(s/def ::vega-pdf-opts
   ;(s/keys :req-un []))
-  
+
 
 (defmethod compile-args-spec [:vega-lite :pdf]
   ;; As written below, it may not be incorrect, but files may be getting overwritten between steps or weird
@@ -539,7 +539,7 @@
     (fn [form]
       (cond
         ;; If we see a function, call it with the args in form
-        (and (vector? form) (fn? (first form))) 
+        (and (vector? form) (fn? (first form)))
         (compile-tags (apply-fn-component form) compilers)
         ;; apply compilers
         (vector? form)
@@ -563,7 +563,7 @@
 ;; It sorta bugs me that the application of the tag compilers has to happen in two places (both the hiccup ->
 ;; hiccup, and the :default, both below).
 ;; This suggests we may not have the right model here yet
-;; Maybe its fine that these things are 
+;; Maybe its fine that these things are
 
 (defmethod compile-args-spec [:hiccup :hiccup]
   [_] (s/cat :doc ::hiccup :opts ::hiccup-opts))
@@ -652,7 +652,7 @@
 
 (defn- base64-encode [bytes]
   (.encodeToString (java.util.Base64/getEncoder) bytes))
-   
+
 (defn embed-png
   [bytes]
   [:img
@@ -672,32 +672,32 @@
          ;; expose id in opts?
          id (str "viz-" (java.util.UUID/randomUUID))
          code (format "vegaEmbed('#%s', %s, %s);" id (json/generate-string doc) (json/generate-string {:mode mode}))]
-     [:div
-       ;; TODO In the future this should be a precompiled version of whatever the viz renders as (svg), at least
-       ;; optionally
-       ;; Also SECURITY!!! We should have to allowlist via metadata or something things that we don't want to
-       ;; sanitize
-       [:div {:id id}
-        (when static-embed
-          (let [embed-as (s/conform ::static-embed static-embed)]
-            (if (= embed-as ::s/invalid)
-              "Unable to compile viz"
-              (try
-                (let [[opt-type opt-val] embed-as]
-                  (cond
-                    ;; default to png, since this will generally be more performant (TODO: test?)
-                    (or (and (= opt-type :bool) opt-val)
-                        (= opt-val :png))
-                    (embed-png (compile doc (merge opts {:from-format mode :to-format :png})))
-                    ;; Use svg as hiccup if requested
-                    (= opt-val :svg)
-                    (compile doc (merge opts {:from-format mode :to-format :svg}))))
-                (catch Throwable t
-                  (log/error "Unable to execute static embed")
-                  (log/error t)
-                  nil)))))]
-       (when live-embed?
-         [:script {:type "text/javascript"} code])])))
+     [:div.vega-lite-container
+      ;; TODO In the future this should be a precompiled version of whatever the viz renders as (svg), at least
+      ;; optionally
+      ;; Also SECURITY!!! We should have to allowlist via metadata or something things that we don't want to
+      ;; sanitize
+      [:div {:id id}
+       (when static-embed
+         (let [embed-as (s/conform ::static-embed static-embed)]
+           (if (= embed-as ::s/invalid)
+             "Unable to compile viz"
+             (try
+               (let [[opt-type opt-val] embed-as]
+                 (cond
+                   ;; default to png, since this will generally be more performant (TODO: test?)
+                   (or (and (= opt-type :bool) opt-val)
+                       (= opt-val :png))
+                   (embed-png (compile doc (merge opts {:from-format mode :to-format :png})))
+                   ;; Use svg as hiccup if requested
+                   (= opt-val :svg)
+                   (compile doc (merge opts {:from-format mode :to-format :svg}))))
+               (catch Throwable t
+                 (log/error "Unable to execute static embed")
+                 (log/error t)
+                 nil)))))]
+      (when live-embed?
+        [:script {:type "text/javascript"} code])])))
 
 
 (defn ^:no-doc map->style-string
@@ -869,7 +869,7 @@
         (html [:div#app [:h2 "oz"] [:p "pay no attention"]]
               {:omit-vega-libs? true}))
   :end-comment)
-   
+
 
 ;; again is this the right naming convention
 
@@ -889,7 +889,7 @@
 
 (defmethod export!*
   :default
-  [doc filepath {:as opts}] 
+  [doc filepath {:as opts}]
   ;; Default method is to just call convert and spit to file
   (spit filepath (compile doc opts)))
 
@@ -975,7 +975,7 @@
             block))
         block))
     block))
-    
+
 
 
 ;; I'd like to be able to define my own markdown extensions
@@ -1095,7 +1095,7 @@
 
   Specific compilations may support additional features. For example, compiling to `:html` will support
   all of the options that the `oz/html` function supports.
-  
+
   ALPHA FEATURE: This function can be extended by implementing the `compile*` method on key
   [from-format to-format]. If you define one of these methods to or from `:hiccup`, it will automatically
   be possible to compile from or to any other format for which `:hiccup` already has a compiler
@@ -1182,14 +1182,14 @@
         (log/error "Try using a different port?")
         (.printStackTrace e)))))
 
-;; We need this here so that 
+;; We need this here so that
 (declare handle-block-result)
 
 
 ;; this no longer does anything; using the :connected-uids-init-data watch below
 (defmethod server/-event-msg-handler :oz.app/connection-established
   [{:as ev-msg :keys [event id ?data ring-req ?reply-fn send-fn]}]
-  (log/info "new connection established: " ev-msg)) 
+  (log/info "new connection established: " ev-msg))
   ;(when-let [doc @last-viewed-doc]
     ;(let [session (:session ring-req)
           ;uid (:uid session)
@@ -1255,13 +1255,13 @@
   * for oauth2:
     * `:client-id`: an oauth2 client id property
     * `:access-token`: oauth2 access token
-  
+
   CAUTION: Note that running these options from the REPL may leave sensitive data in your `./.lein-repl-history` file.
   Thus it's best that you avoid using these options, and instead create a single edn file at `~/.oz/github-creds.edn` with these opts.
   You can run `chmod 600` on it, so that only the owner is able to access it.
   If you want to specify a different path use:
   * `:auth-file`: defaults to `~/.oz/github-creds.edn`.
-  
+
   Additional options:
   * `:public`: default false
   * `:description`: auto generated based on doc"
@@ -1317,13 +1317,13 @@
   * for oauth2:
     * `:client-id`: an oauth2 client id property
     * `:access-token`: oauth2 access token
-  
+
   CAUTION: Note that running these options from the REPL may leave sensitive data in your `./.lein-repl-history` file.
   Thus it's best that you avoid using these options, and instead create a single edn file at `~/.oz/github-creds.edn` with these opts.
   You can run `chmod 600` on it, so that only the owner is able to access it.
   If you want to specify a different path use:
   * `:auth-file`: defaults to `~/.oz/github-creds.edn`.
-  
+
   Additional options:
   * `:public`: default false
   * `:description`: auto generated based on doc
@@ -1518,7 +1518,7 @@
             ;(log/info "Rerendering file:" filename)
             ;(let [evaluation
                   ;(cond
-                    ;;; 
+                    ;;;
                     ;(#{"clj" "cljc"} ext)
                     ;(live/reload-file! {:kind kind :file file})
                     ;;; how do we handle cljs?
@@ -1558,7 +1558,7 @@
 
 (s/def ::evaluation
   (s/keys :req-un [::result-chans ::blocks-by-id ::block-id-seq]))
- 
+
 
 (defn transitable-block [block]
   (walk/postwalk
@@ -1692,7 +1692,7 @@
       (not= contents
             (get-in @live/watchers [filename :last-contents])))
     {:file file}))
-        
+
 
 (defn- evaluate-file! [file ext format]
   (cond
@@ -1739,7 +1739,7 @@
             (log/info "Rerendering file:" filename)
             (let [evaluation
                   (cond
-                    ;; 
+                    ;;
                     (#{"clj" "cljc"} ext)
                     ;; Will not return if there's nothing to evaluate
                     (next/reload-file! file)
@@ -1813,7 +1813,7 @@
   details about how to build data from one path to the other. Available build-desc keys are:
     * `:from` - (required) Path from which to build
     * `:to` - (required) Compiled files go here
-    * `:template-fn` - Function which takes Oz hiccup content and returns some new hiccup, presumably placing the content in question in some 
+    * `:template-fn` - Function which takes Oz hiccup content and returns some new hiccup, presumably placing the content in question in some
     * `:out-path-fn` - Function used for naming compilation output
     * `:to-format` - Literal format to use for export!
     * `:to-format-fn` - Function of input filename to format
@@ -1821,7 +1821,7 @@
       - Note: by default, images, css, etc will pass through anyway
 
   Additional options pertinent to the entire build process may be passed in:
-    * `:live?` - Watch the file files 
+    * `:live?` - Watch the file files
     * `:lazy?` - If true, don't build anything until it changes; this is best for interactive/incremental updates and focused work.
                  Set to false if you want to rebuild from scratch. (default true)
     * `:view?` - Build with live view of most recently changed file (default true)

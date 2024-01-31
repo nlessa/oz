@@ -1,16 +1,7 @@
 /* some style */
 
-@font-face {
-    font-family: "LatinModernRomanWOFF";
-    /*src: url('https://www.albany.edu/~hammond/webfonts/lmroman12-regular.woff');*/
-    src: url('http://ozviz.io/fonts/lmroman12-regular.woff');
-}
 
 body {
-  padding: 30px;
-  font-size: 18px;
-  line-height: 1.7em;
-  font-family: 'Computer Modern Concrete', serif;
 }
 
 div#app {
@@ -29,52 +20,15 @@ h1, h2, h3, h4 {
   line-height: 1.4;
 }
 
-.bright {
-  font-family: "Computer Modern Bright", sans-serif;
-}
-.concrete {
-  font-family: "Computer Modern Concrete", serif;
-}
-.typewriter {
-  font-family: "Computer Modern Typewriter", monospace;
-}
-.sans {
-  font-family: "Computer Modern Sans", sans-serif;
-}
-.sans-serif {
-  font-family: 'Open Sans', sans-serif;
-}
-.serif {
-  font-family: 'Open Sans', sans-serif;
-}
-
 /* more semantic block styles */
 .fancy {
   font-family: "Computer Modern Serif", serif;
 }
+
 .plain {
   font-family: "Computer Modern Sans", sans-serif;
 }
 
-h1 {
-  font-size: 3rem;
-  margin-top: 40px;
-  margin-bottom: 20px;
-}
-
-h2 {
-  font-size: 2rem;
-  margin-top: 50px;
-  margin-bottom: 15px;
-}
-
-h3 {
-  font-size: 1.5rem;
-  margin-top: 40px;
-  margin-bottom: 13px;
-}
-
-h4 {font-size: 1.25rem;}
 
 code {
   line-height: 1.5;
@@ -102,7 +56,311 @@ div.vega-embed div.chart-wrapper {
 }
 
 a:hover {
- cursor: pointer;
+  cursor: pointer;
 }
+
+
+/* Report CSS */
+
+body {
+  border: 0px;
+  margin: 0px
+}
+
+div#app {
+  margin: 0;
+  padding: 0;
+}
+
+
+code {
+  line-height: 1.5;
+  font-size: 1.0rem;
+  color: #606060;
+  margin-right: 4px;
+  margin-left: 4px;
+  font-family: "Computer Modern Typewriter", monospace;
+}
+
+pre {
+  line-height: 1.5;
+  font-size: 1.0rem;
+  /*font-size: 1rem;*/
+  color: #606060;
+  font-family: "Computer Modern Typewriter", monospace;
+}
+
+div.vega-embed div.chart-wrapper {
+  height: auto;
+}
+
+a:hover {
+  cursor: pointer;
+}
+
+
+/* CSS Miguel Report */
+
+@charset "UTF-8";
+/* CSS Document */
+
+/* Header */
+header {
+  background-color: #E15534;
+  color: #fff;
+  padding: 12px 72px;
+  font-family: 'Roboto', sans-serif;
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+nav {
+  display: flex;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+}
+
+nav ul li {
+  padding-right: 12px
+}
+
+nav a {
+  text-decoration: none;
+  color: #fff;
+}
+
+/* Body */
+
+main {
+  background-color: #f1f1f1;
+  font-family: 'Roboto', sans-serif;
+  color: #333;
+  padding-top: 24px;
+  padding-left: 72px;
+  padding-bottom: 24px;
+  padding-right: 72px;
+  width: auto;
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin: 16 0px;
+}
+
+h2 {
+  font-size: 2rem;
+  margin: 16 0px;
+}
+
+h3 {
+  font-size: 1.5rem;
+  margin: 16 0px;
+}
+
+h4 {
+  font-size: 1.25rem;
+}
+
+p {
+  font-size: 1rem;
+}
+
+#periodo {
+  font-weight: normal;
+}
+
+div.conteudo-esquerda > table {
+  width: 100%;
+  background-color: white;
+  font-size: 0.9rem;
+  border-collapse: collapse;
+  margin-top: 20px;
+  table-layout: fixed;
+}
+
+div.conteudo-direita > table {
+  width: 100%;
+  background-color: white;
+  font-size: 0.9rem;
+  border-collapse: collapse;
+  margin-top: 20px;
+  table-layout: fixed;
+}
+
+thead {
+  background: #c0c0c0;
+  color: #333333;
+  font-weight: bold;
+}
+
+td, th {
+  border: 1px solid #666666;
+  padding: 8px 15px;
+}
+
+
+table, th, td {
+  border: 1px solid #ccc;
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+}
+
+
+/* Classes */
+
+.conteudo {
+  width: 100%;
+  margin-bottom: 40px;
+}
+
+.conteudo-esquerda {
+  width: 60%;
+  display: inline-block;
+  vertical-align: top;
+  margin-bottom: 40px;
+}
+
+.conteudo-direita {
+  width: 35%;
+  background: #fff;
+  border-radius: 12px;
+  display: inline-block;
+  vertical-align: top;
+  align-content: center;
+  padding-top: 24px;
+  padding-left: 12px;
+  padding-bottom: 24px;
+  padding-right: 12px;
+  box-shadow: 4px 4px 4px #c0c0c0;
+  margin-left: 40px;
+  margin-bottom: 40px;
+}
+
+.conteudo-direita table {
+  width: 100%;
+  background-color: white;
+  font-size: 1rem;
+  border-collapse: collapse;
+  margin-top: 0px;
+  table-layout: fixed;
+}
+
+.conteudo-direita thead {
+  background: #fff;
+  color: #333;
+  font-weight: bold;
+  font-size: 1.5rem
+}
+
+.conteudo-esquerda table {
+  width: 95%;
+  border: 2px solid #ccc;
+}
+
+.conteudo-esquerda th {
+  border: 1px solid #ccc;
+}
+
+.conteudo-esquerda td {
+  border: 1px solid #ccc;
+}
+
+.conteudo-direita table, th, td {
+  border: none;
+  padding: 8px 15px;
+}
+
+.grafico-esquerda {
+
+  border: none;
+  display: inline;
+}
+
+.grafico-direita {
+
+  border: none;
+  display: inline;
+}
+
+
+div.grafico-esquerda > div.vega-lite-container {
+  border: none;
+  display: inline;
+}
+
+div.grafico-direita > div.vega-lite-container {
+  border: none;
+  display: inline;
+}
+
+
+.grafico-centro {
+
+}
+
+.grafico-grande {
+  background: #fff;
+  padding: 18px;
+  width: 97%;
+  border-radius: 24px;
+  box-shadow: 4px 4px 4px #c0c0c0;
+  margin-bottom: 24px;
+  border: none;
+}
+
+
+/* Footer */
+
+footer {
+  background-color: #333;
+  color: #fff;
+  padding: 12px 72px;
+  font-family: 'Roboto', sans-serif;
+}
+
+
+div.grafico-esquerda > div.vega-lite-container > div.vega-embed.has-actions > div.chart-wrapper > canvas.marks {
+  background: #fff;
+  padding: 24px;
+  width: 42%;
+  border-radius: 18px;
+  box-shadow: 4px 4px 4px #c0c0c0;
+  margin-right: 24px;
+  border: none;
+  display: inline;
+}
+
+div.grafico-direita > div.vega-lite-container > div.vega-embed.has-actions > div.chart-wrapper > canvas.marks {
+  background: #fff;
+  padding: 24px;
+  width: 42%;
+  border-radius: 18px;
+  box-shadow: 4px 4px 4px #c0c0c0;
+  margin-right: 24px;
+  border: none;
+  display: inline;
+}
+
+
+div.grafico-centro > div.vega-lite-container > div.vega-embed.has-actions > div.chart-wrapper > canvas.marks {
+  background: #fff;
+  padding: 18px;
+  width: 800px;
+  height: 320px;
+  border-radius: 24px;
+  box-shadow: 4px 4px 4px #c0c0c0;
+  margin-bottom: 24px;
+  border: none;
+
+}
+
 
 
