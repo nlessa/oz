@@ -1,50 +1,37 @@
 /* some style */
-
-
-body {
-}
-
-div#app {
-  margin: 0;
-  padding: 0;
-}
-
 blockquote {
   font-style: italic;
-  font-family: 'Computer Modern Serif', serif;
+  font-family: 'Roboto', sans-serif;
   color: #606060;
 }
 
 h1, h2, h3, h4 {
-  font-family: "Computer Modern Serif", serif;
-  line-height: 1.4;
+  font-family: 'Roboto', sans-serif;
+  line-height: 1.15;
 }
 
 /* more semantic block styles */
 .fancy {
-  font-family: "Computer Modern Serif", serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 .plain {
-  font-family: "Computer Modern Sans", sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
-
 code {
-  line-height: 1.5;
+  line-height: 1.15;
   font-size: 1.0rem;
   color: #606060;
-  margin-right: 4px;
-  margin-left: 4px;
-  font-family: "Computer Modern Typewriter", monospace;
+  font-family: 'Roboto', sans-serif;
 }
 
 pre {
-  line-height: 1.5;
+  line-height: 1.15;
   font-size: 1.0rem;
   /*font-size: 1rem;*/
   color: #606060;
-  font-family: "Computer Modern Typewriter", monospace;
+  font-family: 'Roboto', sans-serif;
 }
 
 a {
@@ -59,35 +46,20 @@ a:hover {
   cursor: pointer;
 }
 
-
 /* Report CSS */
-
-body {
-  border: 0px;
-  margin: 0px
-}
-
-div#app {
-  margin: 0;
-  padding: 0;
-}
-
-
 code {
-  line-height: 1.5;
+  line-height: 1.15;
   font-size: 1.0rem;
   color: #606060;
-  margin-right: 4px;
-  margin-left: 4px;
-  font-family: "Computer Modern Typewriter", monospace;
+  font-family: 'Roboto', sans-serif;
 }
 
 pre {
-  line-height: 1.5;
+  line-height: 1.15;
   font-size: 1.0rem;
   /*font-size: 1rem;*/
   color: #606060;
-  font-family: "Computer Modern Typewriter", monospace;
+  font-family: 'Roboto', sans-serif;
 }
 
 div.vega-embed div.chart-wrapper {
@@ -100,7 +72,6 @@ a:hover {
 
 
 /* CSS Miguel Report */
-
 @charset "UTF-8";
 /* CSS Document */
 
@@ -114,6 +85,16 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+body {
+  margin: 0;
+}
+
+form {
+  display: block;
+  margin: 0;
+  margin-block-end: 0;
 }
 
 nav {
@@ -135,7 +116,6 @@ nav a {
 }
 
 /* Body */
-
 main {
   background-color: #f1f1f1;
   font-family: 'Roboto', sans-serif;
@@ -149,17 +129,14 @@ main {
 
 h1 {
   font-size: 2.5rem;
-  margin: 16 0px;
 }
 
 h2 {
   font-size: 2rem;
-  margin: 16 0px;
 }
 
 h3 {
   font-size: 1.5rem;
-  margin: 16 0px;
 }
 
 h4 {
@@ -174,23 +151,6 @@ p {
   font-weight: normal;
 }
 
-div.conteudo-esquerda > table {
-  width: 100%;
-  background-color: white;
-  font-size: 0.9rem;
-  border-collapse: collapse;
-  margin-top: 20px;
-  table-layout: fixed;
-}
-
-div.conteudo-direita > table {
-  width: 100%;
-  background-color: white;
-  font-size: 0.9rem;
-  border-collapse: collapse;
-  margin-top: 20px;
-  table-layout: fixed;
-}
 
 thead {
   background: #c0c0c0;
@@ -202,7 +162,6 @@ td, th {
   border: 1px solid #666666;
   padding: 8px 15px;
 }
-
 
 table, th, td {
   border: 1px solid #ccc;
@@ -216,42 +175,45 @@ th, td {
 
 /* Classes */
 
-.conteudo {
-  width: 100%;
-  margin-bottom: 40px;
+.conteudo-container {
+
+  margin-bottom: 60px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: stretch
+
 }
 
 .conteudo-esquerda {
-  width: 60%;
-  display: inline-block;
+  display: flex;
+  flex: 60;
+  flex-direction: column;
   vertical-align: top;
-  margin-bottom: 40px;
 }
 
 .conteudo-direita {
-  width: 35%;
+  height: 100%;
+  flex-direction: column;
+  justify-content: flex-start;
+  display: flex;
+  flex: 35;
+  padding: 24 12;
   background: #fff;
   border-radius: 12px;
-  display: inline-block;
   vertical-align: top;
   align-content: center;
-  padding-top: 24px;
-  padding-left: 12px;
-  padding-bottom: 24px;
-  padding-right: 12px;
   box-shadow: 4px 4px 4px #c0c0c0;
-  margin-left: 40px;
-  margin-bottom: 40px;
 }
 
 .conteudo-direita table {
-  width: 100%;
   background-color: white;
   font-size: 1rem;
+  padding: 12px;
   border-collapse: collapse;
-  margin-top: 0px;
   table-layout: fixed;
 }
+
 
 .conteudo-direita thead {
   background: #fff;
@@ -261,9 +223,27 @@ th, td {
 }
 
 .conteudo-esquerda table {
-  width: 95%;
+  margin-top: 25px;
   border: 2px solid #ccc;
+
 }
+
+div.conteudo-esquerda > table {
+  width: 95%;
+  background-color: white;
+  font-size: 1rem;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+div.conteudo-direita > table {
+  width: 100%;
+  background-color: white;
+  font-size: 1rem;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
 
 .conteudo-esquerda th {
   border: 1px solid #ccc;
@@ -278,8 +258,21 @@ th, td {
   padding: 8px 15px;
 }
 
+table {
+
+}
+
+.graficos {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
 .grafico-esquerda {
 
+  margin-right: 24px;
   border: none;
   display: inline;
 }
@@ -290,6 +283,25 @@ th, td {
   display: inline;
 }
 
+.grafico-centro {
+  margin-bottom: 30px;
+  width: 65%;
+}
+
+
+
+.full-screen {
+  width: 100%
+}
+
+.grafico-grande {
+  background: #fff;
+  padding: 18px;
+  background: #fff;
+  border-radius: 24px;
+  box-shadow: 4px 4px 4px #c0c0c0;
+  border: none;
+}
 
 div.grafico-esquerda > div.vega-lite-container {
   border: none;
@@ -302,18 +314,41 @@ div.grafico-direita > div.vega-lite-container {
 }
 
 
-.grafico-centro {
-
+div.grafico-esquerda > div.vega-embed {
+  background: #fff;
+  padding: 24px;
+  border-radius: 18px;
+  box-shadow: 4px 4px 4px #c0c0c0;
 }
 
-.grafico-grande {
+div.grafico-centro > div.vega-embed {
+  width: 100%;
   background: #fff;
   padding: 18px;
-  width: 97%;
-  border-radius: 24px;
+  border-radius: 18px;
   box-shadow: 4px 4px 4px #c0c0c0;
-  margin-bottom: 24px;
-  border: none;
+}
+
+
+div.grafico-direita > div.vega-embed {
+  background: #fff;
+  padding: 24px;
+  border-radius: 18px;
+  box-shadow: 4px 4px 4px #c0c0c0;
+}
+
+.vega-embed.has-actions {
+  padding: 0;
+}
+
+div.grafico-esquerda > div.vega-embed > div.chart-wrapper > canvas.marks {
+}
+
+div.grafico-direita > div.vega-embed > div.chart-wrapper > canvas.marks {
+}
+
+div.grafico-centro > div.vega-embed > div.chart-wrapper > canvas.marks {
+
 }
 
 
@@ -325,42 +360,3 @@ footer {
   padding: 12px 72px;
   font-family: 'Roboto', sans-serif;
 }
-
-
-div.grafico-esquerda > div.vega-lite-container > div.vega-embed.has-actions > div.chart-wrapper > canvas.marks {
-  background: #fff;
-  padding: 24px;
-  width: 42%;
-  border-radius: 18px;
-  box-shadow: 4px 4px 4px #c0c0c0;
-  margin-right: 24px;
-  border: none;
-  display: inline;
-}
-
-div.grafico-direita > div.vega-lite-container > div.vega-embed.has-actions > div.chart-wrapper > canvas.marks {
-  background: #fff;
-  padding: 24px;
-  width: 42%;
-  border-radius: 18px;
-  box-shadow: 4px 4px 4px #c0c0c0;
-  margin-right: 24px;
-  border: none;
-  display: inline;
-}
-
-
-div.grafico-centro > div.vega-lite-container > div.vega-embed.has-actions > div.chart-wrapper > canvas.marks {
-  background: #fff;
-  padding: 18px;
-  width: 820px  !important;
-  height: 320px !important;
-  border-radius: 24px;
-  box-shadow: 4px 4px 4px #c0c0c0;
-  margin-bottom: 24px;
-  border: none;
-
-}
-
-
-
