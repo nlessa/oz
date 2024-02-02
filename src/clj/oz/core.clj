@@ -672,30 +672,29 @@
          ;; expose id in opts?
          id (str "viz-" (java.util.UUID/randomUUID))
          code (format "vegaEmbed('#%s', %s, %s);" id (json/generate-string doc) (json/generate-string {:mode mode}))]
-     [:div.vega-lite-container
       ;; TODO In the future this should be a precompiled version of whatever the viz renders as (svg), at least
       ;; optionally
       ;; Also SECURITY!!! We should have to allowlist via metadata or something things that we don't want to
       ;; sanitize
-      [:div {:id id}
-       (when static-embed
-         (let [embed-as (s/conform ::static-embed static-embed)]
-           (if (= embed-as ::s/invalid)
-             "Unable to compile viz"
-             (try
-               (let [[opt-type opt-val] embed-as]
-                 (cond
-                   ;; default to png, since this will generally be more performant (TODO: test?)
-                   (or (and (= opt-type :bool) opt-val)
-                       (= opt-val :png))
-                   (embed-png (compile doc (merge opts {:from-format mode :to-format :png})))
-                   ;; Use svg as hiccup if requested
-                   (= opt-val :svg)
-                   (compile doc (merge opts {:from-format mode :to-format :svg}))))
-               (catch Throwable t
-                 (log/error "Unable to execute static embed")
-                 (log/error t)
-                 nil)))))]
+     [:div {:id id}
+      (when static-embed
+        (let [embed-as (s/conform ::static-embed static-embed)]
+          (if (= embed-as ::s/invalid)
+            "Unable to compile viz"
+            (try
+              (let [[opt-type opt-val] embed-as]
+                (cond
+                  ;; default to png, since this will generally be more performant (TODO: test?)
+                  (or (and (= opt-type :bool) opt-val)
+                      (= opt-val :png))
+                  (embed-png (compile doc (merge opts {:from-format mode :to-format :png})))
+                  ;; Use svg as hiccup if requested
+                  (= opt-val :svg)
+                  (compile doc (merge opts {:from-format mode :to-format :svg}))))
+              (catch Throwable t
+                (log/error "Unable to execute static embed")
+                (log/error t)
+                nil)))))
       (when live-embed?
         [:script {:type "text/javascript"} code])])))
 
