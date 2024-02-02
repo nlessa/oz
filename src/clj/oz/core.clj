@@ -789,6 +789,16 @@
           [:meta {:name "viewport" :content "width=device-width, initial-scale=1"}]
           (when-not omit-shortcut-icon?
             (shortcut-icon (or shortcut-icon-url "http://ozviz.io/oz.svg")))]
+
+        [:script {:src "js/vendor/jquery-3.1.0.js"}]
+        #_[:script {:src "js/vendor/bootstrap.min.js"}]
+        [:link {:rel "stylesheet" :href "https://cdn.jsdelivr.net/npm/fomantic-ui@2.7.8/dist/semantic.min.css"}]
+        [:script {:src "js/vendor/aws-cognito-sdk.min.js"}]
+        [:script {:src "js/vendor/amazon-cognito-identity.min.js"}]
+        [:script {:src "js/config.js"}]
+        [:script {:src "js/cognito-auth.js"}]
+        [:script {:src "js/report.js"}]
+
         ;; QUESTION Possible to embed these directly?
         (when-not omit-styles?
           [
