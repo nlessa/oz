@@ -291,7 +291,8 @@ table {
 
 
 .full-screen {
-  width: 100%
+  width: 100%;
+  max-width: 1854px;
 }
 
 .grafico-grande {
@@ -323,6 +324,7 @@ div.grafico-esquerda > div.vega-embed {
 
 div.grafico-centro > div.vega-embed {
   width: 100%;
+  min-width: 1120px;
   background: #fff;
   padding: 18px;
   border-radius: 18px;
